@@ -134,7 +134,7 @@ local function createOptionHolder(holderTitle, parent, parentTable, subHolder)
 	
 	layout.Changed:connect(function()
 		parentTable.content.Size = UDim2.new(1, 0, 0, layout.AbsoluteContentSize.Y)
-		tweenService:Create(parentTable.main, TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Size = (#parentTable.options > 0 and parentTable.open and UDim2.new(0, 230, 0, layout.AbsoluteContentSize.Y + size) or UDim2.new(0, 230, 0, size))}):Play()
+		parentTable.main.Size = #parentTable.options > 0 and parentTable.open and UDim2.new(0, 230, 0, layout.AbsoluteContentSize.Y + size) or UDim2.new(0, 230, 0, size)
 	end)
 	
 	if not subHolder then
@@ -1319,17 +1319,6 @@ local function createColorPickerWindow(option)
 		end
 	end)
 	
-	function option:DisableRainbow()
-		rainbowEnabled = false
-
-		if rainbowLoop then
-			rainbowLoop:Disconnect()
-		end
-
-		option:SetColor(previousColors[#previousColors])
-		option.rainbowText.TextColor3 = Color3.fromRGB(255, 255, 255)
-	end
-
 	return option
 end
 
@@ -1412,12 +1401,6 @@ local function createColor(option, parent, holder)
 			end
 		end
 	end)
-
-	function option:DisableRainbow()
-		if self.mainHolder then
-			self:DisableRainbow()
-		end
-	end
 	
 	function option:SetColor(newColor)
 		if self.mainHolder then
@@ -1626,18 +1609,22 @@ local UnlockMouse
 function library:Init()
 	
 	self.base = self.base or self:Create("ScreenGui")
-
-	if syn.protect_gui then
-		print("mf")
+	if syn and syn.protect_gui then
+		syn.protect_gui(self.base)
 	elseif get_hidden_gui then
 		get_hidden_gui(self.base)
-	end
-	
-	if gethui then
-		self.base.Parent = gethui()
 	else
-		self.base.Parent = game:GetService"CoreGui"
+        self.base.Parent = game.CoreGui
 	end
+	self.base.Parent = game:GetService"CoreGui"
+	
+	self.cursor = self.cursor or self:Create("Frame", {
+		ZIndex = 100,
+		AnchorPoint = Vector2.new(0, 0),
+		Size = UDim2.new(0, 5, 0, 5),
+		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+		Parent = self.base
+	})
 	
 	for _, window in next, self.windows do
 		if window.canInit and not window.init then
@@ -1650,6 +1637,7 @@ end
 
 function library:Close()
 	self.open = not self.open
+	self.cursor.Visible = self.open
 	if self.activePopup then
 		self.activePopup:Close()
 	end
@@ -1676,6 +1664,10 @@ inputService.InputBegan:connect(function(input)
 end)
 
 inputService.InputChanged:connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement and library.cursor then
+		local mouse = inputService:GetMouseLocation() + Vector2.new(0, -36)
+		library.cursor.Position = UDim2.new(0, mouse.X - 2, 0, mouse.Y - 2)
+	end
 	if input == dragInput and dragging then
 		update(input)
 	end
