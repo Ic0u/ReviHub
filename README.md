@@ -16,3 +16,10 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/coastss/universal/mai
 ### [Added]:
 - New loader
 - Rewrite wally v3
+
+
+## 12 March 2025:
+### [Added]:
+- rewrite rounding method uilib
+- added some custom elements (notification modules , gradient buttons, bypass detection)
+- mobile friendly
