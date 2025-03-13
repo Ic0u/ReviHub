@@ -427,7 +427,7 @@ local function createBind(option, parent)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             binding = true
             bindinput.Text = "..."
-            tweenService:Create(round, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+            tweenService:Create(round, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(90, 90, 90)}):Play()
         end
         if input.UserInputType == Enum.UserInputType.MouseMovement then
             inContact = false
