@@ -227,7 +227,7 @@ function createToggle(option, parent)
         SizeConstraint = Enum.SizeConstraint.RelativeYY,
         BackgroundTransparency = 1,
         Image = "rbxassetid://3570695787",
-        ImageColor3 = option.state and Color3.fromRGB(255, 65, 65) or Color3.fromRGB(100, 100, 100),
+        ImageColor3 = option.state and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(100, 100, 100),
         ScaleType = Enum.ScaleType.Slice,
         SliceCenter = Rect.new(100, 100, 100, 100),
         SliceScale = 0.02,
@@ -239,7 +239,7 @@ function createToggle(option, parent)
         Size = UDim2.new(1, -4, 1, -4),
         BackgroundTransparency = 1,
         Image = "rbxassetid://3570695787",
-        ImageColor3 = option.state and Color3.fromRGB(255, 65, 65) or Color3.fromRGB(20, 20, 20),
+        ImageColor3 = option.state and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(20, 20, 20),
         ScaleType = Enum.ScaleType.Slice,
         SliceCenter = Rect.new(100, 100, 100, 100),
         SliceScale = 0.02,
@@ -289,9 +289,9 @@ function createToggle(option, parent)
         library.flags[self.flag] = state
         self.state = state
         checkmarkHolder:TweenSize(option.state and UDim2.new(1, -8, 1, -8) or UDim2.new(0, 0, 1, -8), "Out", "Quad", 0.2, true)
-        tweenService:Create(tickboxInner, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = state and Color3.fromRGB(255, 65, 65) or Color3.fromRGB(20, 20, 20)}):Play()
+        tweenService:Create(tickboxInner, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = state and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(20, 20, 20)}):Play()
         if state then
-            tweenService:Create(tickboxOutline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(255, 65, 65)}):Play()
+            tweenService:Create(tickboxOutline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(255, 255, 255)}):Play()
         else
             if inContact then
                 tweenService:Create(tickboxOutline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(140, 140, 140)}):Play()
@@ -315,64 +315,58 @@ end
 
 function createButton(option, parent)
     local main = library:Create("TextLabel", {
+        ZIndex = 2,
         LayoutOrder = option.position,
         Size = UDim2.new(1, 0, 0, 34),
         BackgroundTransparency = 1,
         Text = " " .. option.text,
         TextSize = 17,
         Font = Enum.Font.Gotham,
-        TextColor3 = Color3.fromRGB(0, 0, 0), -- Ensure text is black
+        TextColor3 = Color3.fromRGB(255, 255, 255),
         Parent = parent.content
     })
-    
+
     local round = library:Create("ImageLabel", {
         AnchorPoint = Vector2.new(0.5, 0.5),
         Position = UDim2.new(0.5, 0, 0.5, 0),
         Size = UDim2.new(1, -12, 1, -10),
         BackgroundTransparency = 1,
         Image = "rbxassetid://3570695787",
+        ImageColor3 = Color3.fromRGB(40, 40, 40),
         ScaleType = Enum.ScaleType.Slice,
         SliceCenter = Rect.new(100, 100, 100, 100),
         SliceScale = 0.02,
         Parent = main
     })
 
-    -- Add a UIGradient for the gradient effect
-    local gradient = Instance.new("UIGradient")
-    gradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(65, 0, 151)), -- Main Color
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(228, 92, 255)) -- Second Color
-    }
-    gradient.Parent = round
-    
     local inContact
     local clicking
     main.InputBegan:connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             library.flags[option.flag] = true
             clicking = true
-            tweenService:Create(round, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(255, 65, 65)}):Play()
+            tweenService:Create(round, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(40, 40, 40)}):Play()
             option.callback()
         end
         if input.UserInputType == Enum.UserInputType.MouseMovement then
             inContact = true
-            tweenService:Create(round, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 0.5}):Play() -- Adjust transparency for hover
+            tweenService:Create(round, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(60, 60, 60)}):Play()
         end
     end)
-    
+
     main.InputEnded:connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             clicking = false
             if inContact then
-                tweenService:Create(round, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 0}):Play() -- Revert to gradient
+                tweenService:Create(round, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(60, 60, 60)}):Play()
             else
-                tweenService:Create(round, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 0}):Play() -- Revert to gradient
+                tweenService:Create(round, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(40, 40, 40)}):Play()
             end
         end
         if input.UserInputType == Enum.UserInputType.MouseMovement then
             inContact = false
             if not clicking then
-                tweenService:Create(round, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 0}):Play() -- Revert to gradient
+                tweenService:Create(round, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(40, 40, 40)}):Play()
             end
         end
     end)
@@ -594,8 +588,8 @@ local function createSlider(option, parent)
     local inContact
     main.InputBegan:connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            tweenService:Create(fill, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(255, 65, 65)}):Play()
-            tweenService:Create(circle, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(3.5, 0, 3.5, 0), ImageColor3 = Color3.fromRGB(255, 65, 65)}):Play()
+            tweenService:Create(fill, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+            tweenService:Create(circle, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(3.5, 0, 3.5, 0), ImageColor3 = Color3.fromRGB(255, 255, 255)}):Play()
             sliding = true
             option:SetValue(option.min + ((input.Position.X - slider.AbsolutePosition.X) / slider.AbsoluteSize.X) * (option.max - option.min))
         end
@@ -885,11 +879,12 @@ local function createList(option, parent, holder)
                 tweenService:Create(label, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 1, TextTransparency = 1}):Play()
             end
         end
-        wait(0.3, function()
+        wait(0.3)
+        --delay(0.3, function()
             if not self.open then
                 self.mainHolder.Visible = false
             end
-        end)
+        --end)
     end
 
     return option
