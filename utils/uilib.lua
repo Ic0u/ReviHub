@@ -227,7 +227,7 @@ function createToggle(option, parent)
         SizeConstraint = Enum.SizeConstraint.RelativeYY,
         BackgroundTransparency = 1,
         Image = "rbxassetid://3570695787",
-        ImageColor3 = option.state and Color3.fromRGB(255, 65, 65) or Color3.fromRGB(100, 100, 100),
+        ImageColor3 = option.state and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(100, 100, 100),
         ScaleType = Enum.ScaleType.Slice,
         SliceCenter = Rect.new(100, 100, 100, 100),
         SliceScale = 0.02,
@@ -239,7 +239,7 @@ function createToggle(option, parent)
         Size = UDim2.new(1, -4, 1, -4),
         BackgroundTransparency = 1,
         Image = "rbxassetid://3570695787",
-        ImageColor3 = option.state and Color3.fromRGB(255, 65, 65) or Color3.fromRGB(20, 20, 20),
+        ImageColor3 = option.state and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(20, 20, 20),
         ScaleType = Enum.ScaleType.Slice,
         SliceCenter = Rect.new(100, 100, 100, 100),
         SliceScale = 0.02,
@@ -322,7 +322,7 @@ function createButton(option, parent)
         Text = " " .. option.text,
         TextSize = 17,
         Font = Enum.Font.Gotham,
-        TextColor3 = Color3.fromRGB(255, 255, 255),
+        TextColor3 = Color3.fromRGB(0, 0, 0),
         Parent = parent.content
     })
     
@@ -338,6 +338,17 @@ function createButton(option, parent)
         SliceScale = 0.02,
         Parent = main
     })
+
+    local bttnbgradient = Instance.new("UIGradient")
+    bttnbgradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(230, 23, 23)), -- Lust Red
+        ColorSequenceKeypoint.new(0.2, Color3.fromRGB(234, 68, 68)), -- Carmine Pink
+        ColorSequenceKeypoint.new(0.4, Color3.fromRGB(238, 114, 114)), -- Candy Pink
+        ColorSequenceKeypoint.new(0.6, Color3.fromRGB(242, 159, 159)), -- Mauvelous
+        ColorSequenceKeypoint.new(0.8, Color3.fromRGB(246, 205, 205)), -- Light Red
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(250, 250, 250)) -- Lotion
+    }
+    bttnbgradient.Parent = round
     
     local inContact
     local clicking
@@ -371,6 +382,8 @@ function createButton(option, parent)
         end
     end)
 end
+end
+    
 
 local function createBind(option, parent)
     local binding
@@ -879,12 +892,11 @@ local function createList(option, parent, holder)
                 tweenService:Create(label, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 1, TextTransparency = 1}):Play()
             end
         end
-        wait(0.3)
-        --delay(0.3, function()
+        wait(0.3, function()
             if not self.open then
                 self.mainHolder.Visible = false
             end
-        --end)
+        end)
     end
 
     return option
