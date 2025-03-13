@@ -321,7 +321,7 @@ function createButton(option, parent)
         Text = " " .. option.text,
         TextSize = 17,
         Font = Enum.Font.Gotham,
-        TextColor3 = Color3.fromRGB(0, 0, 0),
+        TextColor3 = Color3.fromRGB(0, 0, 0), -- Ensure text is black
         Parent = parent.content
     })
     
@@ -356,7 +356,7 @@ function createButton(option, parent)
         end
         if input.UserInputType == Enum.UserInputType.MouseMovement then
             inContact = true
-            tweenService:Create(round, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(60, 60, 60)}):Play()
+            tweenService:Create(round, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 0.5}):Play() -- Adjust transparency for hover
         end
     end)
     
@@ -364,15 +364,15 @@ function createButton(option, parent)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             clicking = false
             if inContact then
-                tweenService:Create(round, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(60, 60, 60)}):Play()
+                tweenService:Create(round, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 0}):Play() -- Revert to gradient
             else
-                tweenService:Create(round, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(40, 40, 40)}):Play()
+                tweenService:Create(round, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 0}):Play() -- Revert to gradient
             end
         end
         if input.UserInputType == Enum.UserInputType.MouseMovement then
             inContact = false
             if not clicking then
-                tweenService:Create(round, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(40, 40, 40)}):Play()
+                tweenService:Create(round, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 0}):Play() -- Revert to gradient
             end
         end
     end)
