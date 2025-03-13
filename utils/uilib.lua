@@ -222,15 +222,7 @@ function createToggle(option, parent)
     })
     
     local tickboxOutline = library:Create("ImageLabel", {
-        Position = UDim2.new(1, -6, 0, 4),
-        Size = UDim2.new(-1, 10, 1, -10),
-        SizeConstraint = Enum.SizeConstraint.RelativeYY,
-        BackgroundTransparency = 1,
-        Image = "rbxassetid://3570695787",
-        ImageColor3 = option.state and Color3.fromRGB(255, 65, 65) or Color3.fromRGB(100, 100, 100),
-        ScaleType = Enum.ScaleType.Slice,
-        SliceCenter = Rect.new(100, 100, 100, 100),
-        SliceScale = 0.02,
+        ImageColor3 = option.state and Theme.Toggle.On_Color or Theme.Toggle.Off_Color,
         Parent = main
     })
     
@@ -315,29 +307,23 @@ end
 
 function createButton(option, parent)
     local main = library:Create("TextLabel", {
-        ZIndex = 2,
-        LayoutOrder = option.position,
-        Size = UDim2.new(1, 0, 0, 34),
-        BackgroundTransparency = 1,
-        Text = " " .. option.text,
-        TextSize = 17,
-        Font = Enum.Font.Gotham,
-        TextColor3 = Color3.fromRGB(255, 255, 255),
+        TextColor3 = Theme.Button.TextColor,
         Parent = parent.content
     })
     
     local round = library:Create("ImageLabel", {
-        AnchorPoint = Vector2.new(0.5, 0.5),
-        Position = UDim2.new(0.5, 0, 0.5, 0),
-        Size = UDim2.new(1, -12, 1, -10),
-        BackgroundTransparency = 1,
-        Image = "rbxassetid://3570695787",
-        ImageColor3 = Color3.fromRGB(40, 40, 40),
-        ScaleType = Enum.ScaleType.Slice,
-        SliceCenter = Rect.new(100, 100, 100, 100),
-        SliceScale = 0.02,
+        ImageColor3 = Theme.Button.Color.MainColor,
         Parent = main
     })
+
+    if Theme.Button.Color.gradient then
+        local gradient = Instance.new("UIGradient")
+        gradient.Color = ColorSequence.new{
+            ColorSequenceKeypoint.new(0, Theme.Button.Color.MainColor),
+            ColorSequenceKeypoint.new(1, Theme.Button.Color.SecondColor)
+        }
+        gradient.Parent = round
+    end
     
     local inContact
     local clicking
@@ -520,24 +506,12 @@ local function createSlider(option, parent)
     })
     
     local slider = library:Create("ImageLabel", {
-        Position = UDim2.new(0, 10, 0, 34),
-        Size = UDim2.new(1, -20, 0, 5),
-        BackgroundTransparency = 1,
-        Image = "rbxassetid://3570695787",
-        ImageColor3 = Color3.fromRGB(30, 30, 30),
-        ScaleType = Enum.ScaleType.Slice,
-        SliceCenter = Rect.new(100, 100, 100, 100),
-        SliceScale = 0.02,
+        ImageColor3 = Theme.Slider.BackGround_Color,
         Parent = main
     })
     
     local fill = library:Create("ImageLabel", {
-        BackgroundTransparency = 1,
-        Image = "rbxassetid://3570695787",
-        ImageColor3 = Color3.fromRGB(60, 60, 60),
-        ScaleType = Enum.ScaleType.Slice,
-        SliceCenter = Rect.new(100, 100, 100, 100),
-        SliceScale = 0.02,
+        ImageColor3 = Theme.Slider.Color2,
         Parent = slider
     })
     
@@ -1733,5 +1707,10 @@ inputService.InputChanged:connect(function(input)
         update(input)
     end
 end)
+
+function applyTheme(theme)
+    Theme = theme
+    -- Reapply theme settings to all UI elements
+end
 
 return library
